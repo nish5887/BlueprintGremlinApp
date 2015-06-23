@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by ayeshadastagiri on 6/19/15.
- */
+
 public class GremlinBlueprint {
     static Vertex person1,person2,person3,person4,person5,person6,restaurant1,restaurant2,restaurant3,restaurant4,restaurant5,restaurant6;
     static Edge link1,link2,link3,link4,link5;
@@ -62,11 +60,11 @@ public class GremlinBlueprint {
         //Suggestions of whom to follow are given to the 'namePerson'
         // It depends on 1) People who visit the same restaurant as him/her 2) People who they follow follow someone else
 
-        List<String> AlreadyFollowing = new List<String>();
+        List<String> AlreadyFollowing = new ArrayList<String>();
         GremlinPipeline GraphForPeopleAlreadyBeingFollowed = new GremlinPipeline(GlobalVars.graph);
         GraphForPeopleAlreadyBeingFollowed.V("name", namePerson).out("Follows");
         for (Object nameFollowed: GraphForPeopleAlreadyBeingFollowed.property("name")){
-            AlreadyFollowing.add(nameFollowed);
+            AlreadyFollowing.add(nameFollowed.toString());
 
         }
 
@@ -78,7 +76,7 @@ public class GremlinBlueprint {
             System.out.println(nameRes); //prints the restaurant name the person visited
             GremlinPipeline VisitsPipe = new GremlinPipeline(GlobalVars.graph).V("name", (String) nameRes).in("Visits");
             for (Object nameP : VisitsPipe.property("name")) {
-                if(!nameP.equals(namePerson)){
+                if(!nameP.equals(namePerson) && !AlreadyFollowing.contains(nameP.toString())){
                     System.out.println(namePerson + " should follow " + nameP);}
             }
 
@@ -93,7 +91,7 @@ public class GremlinBlueprint {
             System.out.println(nameFollows); //prints the person name who is following namePerson
             GremlinPipeline FollowsPipe = new GremlinPipeline(GlobalVars.graph).V("name", (String) nameFollows).in("Follows");
             for (Object nameP : FollowsPipe.property("name")) {
-                if(!nameP.equals(namePerson)){
+                if(!nameP.equals(namePerson) && !AlreadyFollowing.contains(nameP.toString()) ){
                     System.out.println(namePerson + " should follow " + nameP);}
             }
 
