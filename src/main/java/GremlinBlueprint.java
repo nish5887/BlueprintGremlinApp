@@ -46,14 +46,13 @@ public class GremlinBlueprint {
         restaurant6.setProperty("name","R6");
 
 
+
         link1 = graph.addEdge(null, person1, restaurant1, "Visits");
         link1 = graph.addEdge(null, person1, restaurant2, "Visits");
         link2 = graph.addEdge(null, person4, restaurant1, "Visits");
         link3 = graph.addEdge(null, person6, restaurant2, "Visits");
         link4 = graph.addEdge(null, person2, person1, "Follows");
         link5 = graph.addEdge(null, person3, person2, "Follows");
-
-
     }
 
     public static void TraverseGraph(String namePerson) throws ScriptException {
@@ -103,7 +102,7 @@ public class GremlinBlueprint {
 
     }
     public static void main( String[] args ) throws ScriptException {
-        String name = "C";
+        String name = "A";
         CreateGraph();
         TraverseGraph(name);
         graph.shutdown();
